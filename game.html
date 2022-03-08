@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>replit</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <header id='header'>
+     <div> <span id="score">0000</span></div>
+           <div id='lives'>
+        <img src="cat.gif" class='imageClass'/>
+         <img src="cat.gif" class='imageClass'/>
+          <img src="cat.gif" class='imageClass'/>
+      </div>
+      <div>Level: <span id="level">1</span></div>
+      </header>
+    <div id="fieldContainer" style="height: 700px; width: 500px;">
+      </div>
+  <div id="modal">
+    <div class="modal-content">
+    <span class="close" id="lostLife">&times;</span>
+    <p>You lost one life<br>
+      Press close if you want to continue...
+    </p>
+  </div>
+  </div>
+    <div id="modalForSaving">
+    <div class="modal-content">
+    <span class="close">&times;</span>
+    <p>You open new level. Do you want to save?<br>
+      Press close if you want to continue...
+    </p>
+      <button id="SaveResult">Save</button>
+  </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
