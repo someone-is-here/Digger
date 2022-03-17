@@ -1,4 +1,3 @@
-// нашла в видосике на youtube, просто в качестве красивой заставки
 const canvas = window.canvas1;
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;

@@ -46,6 +46,18 @@ span{
 .mirror{
   transform: scale(-1, 1);
 }
+.right{
+  transform: scale(-1, 1);
+}
+.up{
+  transform: scale(-1, 1) rotate(90deg); 
+}
+.down{
+  transform: scale(-1, 1) rotate(270deg); 
+}
+.left{
+  transform: scale(1, 1);
+}
 .imageClassEnemy{
   height: 50px;
   width: 50px;

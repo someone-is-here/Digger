@@ -26,7 +26,7 @@ function GenField() {
   if(windowInnerWidth >= windowInnerHeight){
     document.getElementById("fieldContainer").style.height = (+windowInnerHeight) + "px";
     document.getElementById("fieldContainer").style.width = (+windowInnerHeight) + "px";
-  } else{
+  } else {
     document.getElementById("fieldContainer").style.height = (+windowInnerWidth) + "px";
     document.getElementById("fieldContainer").style.width = (+windowInnerWidth) + "px";
   }
@@ -55,7 +55,6 @@ function SetDiamonds() {
     SetParametrs(image);
     diamondArray.push(pos);
   }
-  console.log("Set diamondArray: " + diamondArray);
 }
 
 window.addEventListener("load", function(){
@@ -93,7 +92,6 @@ window.addEventListener("load", function(){
 });
 
 function SetPlayer(pos) {
-  console.log("Set Player Pos");
   if(!document.getElementsByClassName('mirror')[0]){
     div = document.getElementsByClassName('divField')[pos];
     div.style.background = "url('wall.png')";
@@ -101,7 +99,7 @@ function SetPlayer(pos) {
     img = document.createElement('img');
     img.src = 'cat.gif';
     img.style.backgroundSize = 'cover';
-    img.className = 'imageClass mirror';
+    img.className = 'imageClass mirror right';
     SetParametrs(img);
     div.appendChild(img);
   }
@@ -115,7 +113,6 @@ function movePlayer(key, isDraw = true) {
       if (playerPos <= 9 || trapsArray.includes(playerPos - 10)) {
         return false;
       } else {
-        console.log(playerPos);
         playerImage = document.getElementsByClassName('mirror')[0];
         if(playerImage){
           playerImage.parentElement.removeChild(playerImage);
@@ -125,7 +122,7 @@ function movePlayer(key, isDraw = true) {
         CheckHasDiamond(playerPos);
         CheckHitTheEnemy(playerPos);
         div = document.getElementsByClassName('divField')[playerPos];
-        SetNewPlayerSquare(div);
+        SetNewPlayerSquare(div, 'up');
         }
       }
       break;
@@ -134,7 +131,6 @@ function movePlayer(key, isDraw = true) {
       if (playerPos > 89 || trapsArray.includes(playerPos + 10)) {
         return false;
       } else {
-         console.log(playerPos);
         playerImage = document.getElementsByClassName('mirror')[0];
        if(playerImage){
           playerImage.parentElement.removeChild(playerImage);
@@ -144,7 +140,7 @@ function movePlayer(key, isDraw = true) {
         CheckHasDiamond(playerPos);
         CheckHitTheEnemy(playerPos);
         div = document.getElementsByClassName('divField')[playerPos];
-        SetNewPlayerSquare(div);
+        SetNewPlayerSquare(div,'down');
         }
       }
       break;
@@ -153,7 +149,6 @@ function movePlayer(key, isDraw = true) {
       if ((playerPos - 1) < 0 || (playerPos - 1) % 10 == 9 || trapsArray.includes(playerPos - 1)) {
         return false;
       } else {
-         console.log(playerPos);
         playerImage = document.getElementsByClassName('mirror')[0];
         if(playerImage){
           playerImage.parentElement.removeChild(playerImage);
@@ -163,7 +158,7 @@ function movePlayer(key, isDraw = true) {
         CheckHasDiamond(playerPos);
         CheckHitTheEnemy(playerPos);
         div = document.getElementsByClassName('divField')[playerPos];
-        SetNewPlayerSquare(div);
+        SetNewPlayerSquare(div,'left');
         }
       }
       break;
@@ -172,7 +167,6 @@ function movePlayer(key, isDraw = true) {
       if (playerPos + 1 > 99 || (playerPos + 1) % 10 == 0 || trapsArray.includes(playerPos + 1)) {
         return false;
       } else {
-        console.log(playerPos);
         playerImage = document.getElementsByClassName('mirror')[0];
         if(playerImage){
           playerImage.parentElement.removeChild(playerImage);
@@ -182,7 +176,7 @@ function movePlayer(key, isDraw = true) {
         CheckHasDiamond(playerPos);
         CheckHitTheEnemy(playerPos);
         div = document.getElementsByClassName('divField')[playerPos];
-        SetNewPlayerSquare(div);
+        SetNewPlayerSquare(div,'right');
         }
       }
       break;
@@ -206,18 +200,32 @@ function movePlayer(key, isDraw = true) {
   if(isDraw){
     CheckTraps(playerPos);
   }
+  }
   return true;
 }
 
-function SetNewPlayerSquare(div) {
+function SetNewPlayerSquare(div, def = 'right') {
   div.style.background = "url('wall.png')";
   div.style.backgroundSize = '100%';
   image = document.createElement('img');
   image.src = 'cat.gif';
   image.style.backgroundSize = 'cover';
-  image.className = 'imageClass mirror';
+  switch(def){
+    case 'left':
+      image.className = 'imageClass mirror left';
+      break;
+    case 'right':
+      image.className = 'imageClass mirror right';
+      break;
+    case 'down':
+      image.className = 'imageClass mirror down';
+      break;
+    case 'up':
+      image.className = 'imageClass mirror up';
+      break;
+  }
   SetParametrs(image);
-  div.appendChild(img);
+  div.appendChild(image);
 }
 
 function CheckHasDiamond(pos) {
@@ -228,26 +236,26 @@ function CheckHasDiamond(pos) {
     score = Number(document.getElementById('score').textContent);
     score += 20;
     document.getElementById('score').textContent = score;
-    console.log("Check has diamond: " + diamondArray);
   } 
-    console.log(`Check has diamonds: ${diamondArray}`);
   if (diamondArray.length == 0) {
     level += 1;
     el = document.getElementById('level').innerHTML;
-    console.log(el);
     document.getElementById('level').innerHTML = level;
+
     container = window.fieldContainer;
+    
     while(container.hasChildNodes()){
      container.removeChild(container.childNodes[0]);
     }
+    
     window.modalForSaving.style.display = "block";
     isModalOpen = true;
     NewLevelCreate();
   }
 }
-}
 
 function NewLevelCreate(clear = true){
+  console.log("New level create");
   diamondArray.length = 0;
   trapsArray.length = 0;
   playerPos = 0;
@@ -283,11 +291,9 @@ function SetTraps() {
     SetParametrs(image);
     trapsArray.push(pos);
   }
-  console.log("Set traps: " + trapsArray);
 }
 
 function CheckTraps(pos) {
-  console.log("CheckTraps()" + pos);
   let flag = false;
   trapPos = -1;
   dead = false;
@@ -318,9 +324,7 @@ function CheckTraps(pos) {
     }
   }
   if (forChanging.length > 0) {
-    console.log("change position");  
     timer2 = setTimeout(function () {  
-      console.log(timer2);
       if(key && playerPos != 0){
         for(i = 0; i < forChanging.length; i++){
             for(k = forChanging[i][0]; k <= forChanging[i][0] + forChanging[i][1]; k += 10){
@@ -333,7 +337,6 @@ function CheckTraps(pos) {
               }
             }
         }
-        console.log("delete traps");
         for(i = 0; i < forChanging.length; i++){
           div = document.getElementsByClassName('divField')[forChanging[i][0]];
           if(div && div.hasChildNodes()){
@@ -375,7 +378,6 @@ function SetBadGuys() {
     SetParametrs(image);
     badGuys.push(pos);
   }
-  console.log("Set bad guys: " + badGuys);
 }
 
 function CheckToSetBadGuys(pos){
@@ -394,7 +396,6 @@ function CheckToSetBadGuys(pos){
 function MoveBadGuys() {
   if(!gameOver){
   arrayWithVariants = [-1, -10, 10, 1];
-  console.log(`Move bad guys before: ${badGuys}`);
   for (i = 0; i < badGuys.length; i++) {
       if (playerPos % 10 < badGuys[i] % 10) {
         shift = -1;
@@ -410,7 +411,6 @@ function MoveBadGuys() {
     while (!CheckPosition(shift, badGuys[i]) || trapsArray.includes(newPos) || diamondArray.includes(newPos) || badGuys.includes(newPos)) {
       shift = arrayWithVariants[Math.floor(Math.random() * arrayWithVariants.length)];
       newPos = shift + badGuys[i];
-      console.log(`${newPos}  ${badGuys[i]} ${counter}`);
       if(--counter == 0){
         newPos = badGuys[i];
         break;
@@ -432,9 +432,9 @@ function MoveBadGuys() {
       break;
     }
   }
-  console.log(`Move bad guys after: ${badGuys}`);
   }
 }
+
 function SetParametrs(image){
   if(windowInnerWidth >= windowInnerHeight){
     image.style.height = (+windowInnerHeight / 10) + "px";
@@ -444,6 +444,7 @@ function SetParametrs(image){
     image.style.width = (+windowInnerWidth / 10) + "px";
   }
 }
+
 function CheckPosition(shift, pos) {
   if (shift == -1 && (pos - 1) % 10 == 9) {
     return false;
@@ -471,7 +472,6 @@ function AddEventListenersAndEvents(){
       timerId = setInterval(function () {
         MoveBadGuys();
       }, 1000);
-      console.log("SetTimer");
     }
   }
   document.getElementsByClassName('close')[1].onclick = function (event) {
@@ -481,7 +481,6 @@ function AddEventListenersAndEvents(){
         timerId = setInterval(function () {
           MoveBadGuys();
         }, 1000);
-        console.log("SetTimer");
       }
   }
   window.SaveResult.onclick = function(event){
@@ -491,7 +490,6 @@ function AddEventListenersAndEvents(){
 }
 
 function RegenerateTraps() {
-  console.log("regenerate traps");
   SetPlayer(playerPos);
   for (i = 0; i < badGuys.length; i++) {
     div = document.getElementsByClassName('divField')[badGuys[i]];
@@ -510,7 +508,6 @@ function  CheckHitTheEnemy(playerPos){
 }
 
 function RemoveLives(){
-  console.log("Remove lives");
   div = document.getElementsByClassName('divField')[playerPos];
   if(div.hasChildNodes()){        
     div.removeChild(div.firstChild);
@@ -519,7 +516,6 @@ function RemoveLives(){
   timerId = undefined;
   window.modal.style.display = "block";
   isModalOpen = true;
-  console.log(window.modal);
   RegenerateTraps();
   lives--;
   if (lives > 0) {
